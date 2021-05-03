@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: barramento-de-eventos-service
+spec:
+  selector:
+    #todo Pod que tiver essa tag
+    #fará parte desse serviço
+    app: barramento-de-eventos
+  type: ClusterIP
+  ports:
+  - name: barramento-de-eventos
+    protocol: TCP
+    #o nó recebe requisições nessa porta
+    port: 1000
+    # e direciona para essa porta do Pod
+    targetPort: 1000

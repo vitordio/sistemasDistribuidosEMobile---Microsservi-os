@@ -1,0 +1,24 @@
+# • apiVersion - Qual versão da API do está sendo usada para criar esse objeto.
+# Ocorre que podemos especificar objetos customizados além daqueles disponíveis por padrão.
+# Quando usamos v1, estamos dizendo que
+# queremos criar objetos a partir da coleção padrão do . Quando
+# criamos objetos customizados, eles fazem parte de uma nova versão que
+# criamos e que pode ser especificada aqui.
+
+# • kind - Qual o tipo do objeto.
+# • metadata - Dados sobre o objeto, como o seu nome e um identificador.
+# • spec - Descrição do estado desejado para o objjeto.
+
+# Arquivo não está sendo mais usado
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lembretes
+spec:
+    containers:
+    - name: lembretes
+      image: vitordio/lembretes
+      resources:
+        limits:
+          memory: 256Mi
+          cpu: 1

@@ -1,0 +1,20 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: barramento-de-eventos-deployment
+spec:
+  replicas: 1
+  #number of replicas generated
+  selector:
+    #assigns labels to the pods for future selection
+    matchLabels:
+      app: barramento-de-eventos
+  template:
+    metadata:
+      labels:
+        app: barramento-de-eventos
+        version: v01
+    spec:
+      containers:
+      - name: barramento-de-eventos
+        image: vitordio/barramento-de-eventos

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lembretes-service
+spec:
+  selector:
+    #todo Pod que tiver essa tag
+    #fará parte desse serviço
+    app: lembretes
+  type: ClusterIP
+  ports:
+  - name: lembretes
+    protocol: TCP
+    #o nó recebe requisições nessa porta
+    port: 4000
+    # e direciona para essa porta do Pod
+    targetPort: 4000

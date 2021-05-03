@@ -1,4 +1,6 @@
 const express = require('express');
+const axios = require('axios')
+
 const app = express();
 app.use(express.json());
 
@@ -25,6 +27,11 @@ const funcoes = {
         const observacoes = baseConsulta[observacao.lembreteId]['observacoes'] || [];
         observacoes.push(observacao);
         baseConsulta[observacao.lembreteId]['observacoes'] = observacoes;
+    },
+    ObservacaoAtualizada: (observacao) => {
+        const observacoes = baseConsulta[observacao.lembreteId]['observacoes']
+        const indice = observacoes.findIndex(obs => obs.id === observacao.id);
+        observacoes[indice] = observacao;
     }
 }
 
@@ -33,9 +40,26 @@ app.get('/lembretes', (req, res) => {
 })
 
 app.post('/eventos', (req, res) => {
-    const objeto = funcoes[req.body.tipo];
-    objeto(req.body.dados);
+    try {
+        const objeto = funcoes[req.body.tipo];
+        objeto(req.body.dados);
+    } catch (err) {}
+
     res.status(200).send(baseConsulta);
 })
 
-app.listen((6000), () => console.log('Consultas. Porta 6000'));
+// Sempre que o serviço entrar em execução, consultaremos a base de dados 
+// do barramento e processa cada evento recebido
+app.listen(6000, async () => {
+    console.log('Consultas. Porta 6000');
+    
+    const resp = await axios.get('http://172.26.240.1/eventos')
+
+    // axios entregará os dados na propriedade data
+    resp.data.forEach((valor, indice, colecao) => {
+        try{
+            const objeto = funcoes[valor.tipo]
+            objeto(valor.dados)
+        } catch(err) {}
+    })
+}); 
